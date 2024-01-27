@@ -1,6 +1,3 @@
-#ifndef MYLIST_H
-#define MYLIST_H
-
 #include <QDebug>
 
 template <typename T>
@@ -24,16 +21,16 @@ class MyList{
 public:
 
     MyList() : first(nullptr), last(nullptr), len(0) {}
-
+    //Геттер длины
     int get_len() const { return len; }
-
+    //Проверка на пустоту
     bool is_empty() const
     {
         if (first == nullptr)
             return true;
         else return false;
     }
-
+    //Вставка в конец списка
     bool push_back(T data){
         Node *n = new Node(data);
         if (this->is_empty()){
@@ -50,7 +47,7 @@ public:
         }
         return false;
     }
-
+    //Удаление с конца списка
     bool pop_back()
     {
         if(this->is_empty())
@@ -78,7 +75,7 @@ public:
             return true;
         }
     }
-
+    //Печать листа
     void print_list() const
     {
         Node* curr = first;
@@ -94,7 +91,7 @@ public:
         }
         qDebug() <<"\n";
     }
-
+    //Поиск по значению
     Node* find(const T val) const
     {
         Node* curr = first;
@@ -111,7 +108,7 @@ public:
         qDebug() << "Mylist.find::List is empty or not found";
         return nullptr;
     }
-
+    //Удаление с конца списка
     bool pop_front()
     {
         Node *curr = first;
@@ -130,7 +127,7 @@ public:
         --len;
         return true;
     }
-
+    //Вставка в начало списка
     void push_front(const T val)
     {
         Node* n = new Node(val);
@@ -146,7 +143,7 @@ public:
         ++len;
 
     }
-
+    //Перегрузка оператора
     Node* operator[] (const int indx) const
     {
         Node* curr = first;
@@ -163,18 +160,13 @@ public:
         }
         return curr;
     }
-
-    void print_node(const Node* n) const
-    {
-        qDebug() << n->_data;
-    }
-
+    //Удаление листа
     void delete_list()
     {
         while(pop_front());
         len = 0;
     }
-
+    //Вставка по индексу
     bool insert_into(const int indx, const T val)
     {
 
@@ -218,7 +210,7 @@ public:
 
         return true;
     }
-
+    //Удаление узла по значению
     bool remove(T val){
         Node* removed = this->find(val);
         Node* curr = first;
@@ -236,7 +228,7 @@ public:
         --len;
         return true;
     }
-
+    //Деструктор
     ~MyList()
     {
         delete_list();
@@ -244,4 +236,4 @@ public:
 
 };
 
-#endif // MYLIST_H
+

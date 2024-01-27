@@ -1,5 +1,5 @@
 #include <QDebug>
-
+//
 template <typename T>
 class BinaryTree{
     class TNode{
@@ -12,7 +12,7 @@ class BinaryTree{
     };
 
     TNode* root;
-
+//Внутренний метод вставки.
     bool insert(T const val, TNode* const n)
     {
         if(!n)
@@ -38,6 +38,7 @@ class BinaryTree{
         return true;
 
     }
+//Внутренний метод печати дерева. Рекурсивно печатаем по одному узлу обходом вглубь
     void print_node(TNode* const n) const
     {
         qDebug() << n->_data;
@@ -46,7 +47,7 @@ class BinaryTree{
         if(n->_right)
             print_node(n->_right);
     }
-
+//Внутренний метод поиска элемента
     TNode* find(int const val, TNode* curr)
     {
         if(curr->_data == val)
@@ -57,13 +58,13 @@ class BinaryTree{
             return find(val, curr->_right);
         return nullptr;
     }
-
+//Проверка, есть ли у узла потомки
     bool is_leaf(TNode* const n) const{
         if(!n->_left && !n->_right)
             return true;
         return false;
     }
-
+//Метод поиска родителя узла. Делаем вид, что ищем узел, но возвращаем предыдущий от него
     TNode* find_parent(TNode* const n, TNode* const curr) const
     {
         if(curr->_left == n || curr->_right == n)
@@ -74,7 +75,7 @@ class BinaryTree{
             return find_parent(n, curr->_left);
 
     }
-
+//Поиск минимума в дереве или поддереве
     TNode* find_min(TNode* curr)
     {
         while(curr->_left)
@@ -88,17 +89,20 @@ class BinaryTree{
 public:
 
     BinaryTree() : root(nullptr){}
+//Проверка на непустоту
     bool is_empty() const
     {
         if(root == nullptr)
             return true;
         return false;
     }
+//Метод печати
     void print_tree() const
     {
         print_node(root);
     }
-    TNode* find(T const val) const //Переприсать с рекурсией
+//Метод поиска узла
+    TNode* find(T const val) const
     {
         TNode* curr = root;
 
@@ -110,7 +114,7 @@ public:
         }
         return curr;
     }
-
+//Метод вставки
     bool insert(T const val){
         if(is_empty())
         {
@@ -122,15 +126,17 @@ public:
 
         return true;
     }
+//Метод удаления
     bool remove(T const val)
     {
-        //ДА, Я НЕ ПОНИМАЮ, КАК СДЕЛАТЬ ТОЛЬКО ТРИ СЛУЧАЯ
         TNode* to_del = find(val, root);
+//Проверка на существование удаляемого узла
         if(!to_del)
         {
             qDebug() << "BinaryTree.remove::ELement not found";
             return false;
         }
+//Случай, когда удаляется лист дерева
         if(is_leaf(to_del))
         {
             TNode* parent = find_parent(to_del, root);
@@ -142,9 +148,8 @@ public:
 
 
             return true;
-
         }
-        //ну допустим первый^
+//Случай, когда у удаляемого узла только левый лист в потомках
         if(is_leaf(to_del->_left) && !to_del->_right)
         {
             to_del->_data = to_del->_left->_data;
@@ -152,8 +157,8 @@ public:
             to_del->_left = nullptr;
 
             return true;
-
         }
+//или правый
         if(is_leaf(to_del->_right) && !to_del->_left)
         {
             to_del->_data = to_del->_right->_data;
@@ -161,10 +166,8 @@ public:
             to_del->_right = nullptr;
 
             return true;
-
-
         }
-        //ну допустим второй^
+//Случай, если у узла есть только правая ветка
         if(!to_del->_right)
         {
             TNode* parent = find_parent(to_del, root);
@@ -173,9 +176,8 @@ public:
             delete to_del;
 
             return true;
-
-
         }
+//или левая
         if(!to_del->_left)
         {
             TNode* parent = find_parent(to_del, root);
@@ -184,9 +186,8 @@ public:
             delete to_del;
 
             return true;
-
-
         }
+//Случай, когда узел является родителем полноценного поддерева
         if(to_del->_left && to_del->_right){
             TNode* min_elem = find_min(to_del->_right);
             TNode* parent = find_parent(min_elem, root);
@@ -202,9 +203,6 @@ public:
             return true;
 
         }
-
-
-        //А КАК ЖЕ СЛУЧАЙ КОГДА СЛЕВА ИЛИ СПРАВА ВЕТКА
     }
 
 };
